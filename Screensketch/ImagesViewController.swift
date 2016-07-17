@@ -127,6 +127,7 @@ extension ImagesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let asset = imagesList[indexPath.item]
         let drawViewController = DrawViewController(asset: asset)
+        drawViewController.modalTransitionStyle = .CrossDissolve
         self.presentViewController(drawViewController, animated: true, completion: nil)
     }
 

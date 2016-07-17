@@ -27,10 +27,13 @@ class DrawViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .whiteColor()
-
         setupUI()
 
         PHImageManager.defaultManager().requestImageForAsset(self.asset, targetSize: PHImageManagerMaximumSize, contentMode: .Default, options: PHImageRequestOptions(), resultHandler: { result, _ in
@@ -51,9 +54,15 @@ class DrawViewController: UIViewController {
         ])
 
         saveButton.setTitle("Save", forState: .Normal)
+        saveButton.backgroundColor = .lightGrayColor()
+        saveButton.layer.cornerRadius = 6.0
+        saveButton.clipsToBounds = true
         saveButton.addTarget(self, action: #selector(didTouchSave), forControlEvents: .TouchUpInside)
 
         cancelButton.setTitle("Close", forState: .Normal)
+        cancelButton.backgroundColor = .lightGrayColor()
+        cancelButton.layer.cornerRadius = 6.0
+        cancelButton.clipsToBounds = true
         cancelButton.addTarget(self, action: #selector(didTouchCancel), forControlEvents: .TouchUpInside)
 
         let stackView = UIStackView()
