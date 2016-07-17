@@ -33,7 +33,7 @@ class DrawViewController: UIViewController {
 
         setupUI()
 
-        PHImageManager.defaultManager().requestImageForAsset(self.asset, targetSize: PHImageManagerMaximumSize, contentMode: .Default, options: PHImageRequestOptions(), resultHandler: { result, info in
+        PHImageManager.defaultManager().requestImageForAsset(self.asset, targetSize: PHImageManagerMaximumSize, contentMode: .Default, options: PHImageRequestOptions(), resultHandler: { result, _ in
             if let image = result {
                 self.drawView.backgroundImage = image
             }

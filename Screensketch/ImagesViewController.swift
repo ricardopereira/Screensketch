@@ -28,18 +28,20 @@ class ImagesViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         setupUI()
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         loadContent()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        collectionView.reloadData()
+    }
+
     func setupUI() {
-        collectionView.flowLayout.minimumInteritemSpacing = 2
-        collectionView.flowLayout.minimumLineSpacing = 3
-        let cellWidth = (self.view.frame.width / 2) - collectionView.flowLayout.minimumInteritemSpacing
-        let cellHeight = cellWidth
+        collectionView.flowLayout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        collectionView.flowLayout.minimumLineSpacing = collectionView.flowLayout.sectionInset.bottom
+        collectionView.flowLayout.minimumInteritemSpacing = 10
+        let cellWidth = (self.view.frame.width / 2) - (collectionView.flowLayout.minimumLineSpacing + collectionView.flowLayout.minimumInteritemSpacing)
+        let cellHeight = cellWidth * 1.5
         collectionView.flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight)
 
         collectionView.backgroundColor = .whiteColor()
@@ -56,7 +58,7 @@ class ImagesViewController: UIViewController {
     }
 
     func loadContent() {
-        let collections = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumUserLibrary, options: nil)
+        let collections = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: Device.isSimulator ? .SmartAlbumUserLibrary : .SmartAlbumScreenshots, options: nil)
 
         guard let albumScreenshots = collections.lastObject as? PHAssetCollection else {
             return
@@ -118,8 +120,8 @@ extension ImagesViewController: UICollectionViewDelegateFlowLayout {
         let asset = imagesList[indexPath.item]
         cell.contentView.contentMode = .ScaleAspectFill
         cell.contentView.clipsToBounds = true
+        cell.contentView.layer.cornerRadius = 6.0
         cell.contentView.layer.contents = self.imagesCache[asset.localIdentifier ?? ""]?.CGImage
-        cell.title = asset.localIdentifier
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
