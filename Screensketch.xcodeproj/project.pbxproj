@@ -12,6 +12,8 @@
 		D7EDE7EA1D3BC41300C74150 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7EDE7E91D3BC41300C74150 /* Assets.xcassets */; };
 		D7EDE7ED1D3BC41300C74150 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7EDE7EB1D3BC41300C74150 /* LaunchScreen.storyboard */; };
 		D7EDE7F51D3BC64000C74150 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EDE7F41D3BC64000C74150 /* DrawView.swift */; };
+		D7EDE7F71D3C004000C74150 /* ImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EDE7F61D3C004000C74150 /* ImagesViewController.swift */; };
+		D7EDE7F91D3C20E100C74150 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EDE7F81D3C20E100C74150 /* ImageViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		D7EDE7EC1D3BC41300C74150 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D7EDE7EE1D3BC41300C74150 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7EDE7F41D3BC64000C74150 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		D7EDE7F61D3C004000C74150 /* ImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesViewController.swift; sourceTree = "<group>"; };
+		D7EDE7F81D3C20E100C74150 /* ImageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,8 @@
 				D7EDE7E21D3BC41300C74150 /* AppDelegate.swift */,
 				D7EDE7F41D3BC64000C74150 /* DrawView.swift */,
 				D7EDE7E41D3BC41300C74150 /* DrawViewController.swift */,
+				D7EDE7F61D3C004000C74150 /* ImagesViewController.swift */,
+				D7EDE7F81D3C20E100C74150 /* ImageViewCell.swift */,
 				D7EDE7E91D3BC41300C74150 /* Assets.xcassets */,
 				D7EDE7EB1D3BC41300C74150 /* LaunchScreen.storyboard */,
 				D7EDE7EE1D3BC41300C74150 /* Info.plist */,
@@ -136,6 +142,8 @@
 			files = (
 				D7EDE7E51D3BC41300C74150 /* DrawViewController.swift in Sources */,
 				D7EDE7E31D3BC41300C74150 /* AppDelegate.swift in Sources */,
+				D7EDE7F71D3C004000C74150 /* ImagesViewController.swift in Sources */,
+				D7EDE7F91D3C20E100C74150 /* ImageViewCell.swift in Sources */,
 				D7EDE7F51D3BC64000C74150 /* DrawView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

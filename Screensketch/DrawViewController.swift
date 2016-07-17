@@ -11,13 +11,36 @@ import Photos
 
 class DrawViewController: UIViewController {
 
+    let asset: PHAsset
+
     let drawView = DrawView()
+
     let saveButton = UIButton(type: .System)
+    let cancelButton = UIButton(type: .System)
+
+    init(asset: PHAsset) {
+        self.asset = asset
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .whiteColor()
 
+        setupUI()
+
+        PHImageManager.defaultManager().requestImageForAsset(self.asset, targetSize: PHImageManagerMaximumSize, contentMode: .Default, options: PHImageRequestOptions(), resultHandler: { result, info in
+            if let image = result {
+                self.drawView.backgroundImage = image
+            }
+        })
+    }
+
+    func setupUI() {
         drawView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(drawView)
         NSLayoutConstraint.activateConstraints([
@@ -28,49 +51,34 @@ class DrawViewController: UIViewController {
         ])
 
         saveButton.setTitle("Save", forState: .Normal)
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(saveButton)
-        NSLayoutConstraint.activateConstraints([
-            saveButton.heightAnchor.constraintEqualToConstant(44),
-            saveButton.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
-            saveButton.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
-            saveButton.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor, constant: -10),
-        ])
         saveButton.addTarget(self, action: #selector(didTouchSave), forControlEvents: .TouchUpInside)
-    }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        testLoadImage()
+        cancelButton.setTitle("Close", forState: .Normal)
+        cancelButton.addTarget(self, action: #selector(didTouchCancel), forControlEvents: .TouchUpInside)
+
+        let stackView = UIStackView()
+        stackView.axis = .Horizontal
+        stackView.distribution = .FillEqually
+        stackView.alignment = .Fill
+        stackView.spacing = 30
+        stackView.addArrangedSubview(saveButton)
+        stackView.addArrangedSubview(cancelButton)
+        view.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activateConstraints([
+            stackView.heightAnchor.constraintEqualToConstant(44),
+            stackView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor, constant: 30),
+            stackView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor, constant: -30),
+            stackView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor, constant: -15),
+        ])
     }
 
     func didTouchSave(sender: AnyObject) {
         drawView.saveDrawing()
     }
 
-    func testLoadImage() {
-        let collections = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumUserLibrary, options: nil)
-
-        guard let albumScreenshots = collections.lastObject as? PHAssetCollection else {
-            return
-        }
-
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "mediaType = %i", PHAssetMediaType.Image.rawValue)
-        let assets = PHAsset.fetchAssetsInAssetCollection(albumScreenshots, options: fetchOptions)
-
-        guard let asset = assets.firstObject as? PHAsset else {
-            return
-        }
-
-        let imageRequestOptions = PHImageRequestOptions()
-        imageRequestOptions.synchronous = true
-        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: PHImageManagerMaximumSize, contentMode: .Default, options: imageRequestOptions, resultHandler: { result, info in
-            // Test
-            if let image = result {
-                self.drawView.backgroundImage = image
-            }
-        })
+    func didTouchCancel(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
 }
