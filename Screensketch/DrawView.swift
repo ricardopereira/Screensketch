@@ -11,8 +11,8 @@ import Photos
 
 class DrawView: UIView {
 
-    var drawColor: UIColor = UIColor.blackColor()
-    var drawWidth: CGFloat = 10.0
+    var drawColor: UIColor = UIColor.redColor()
+    var drawWidth: CGFloat = 6.0
 
     var backgroundImage: UIImage? {
         didSet {
