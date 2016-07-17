@@ -13,7 +13,8 @@ class DrawView: UIView {
     var drawColor: UIColor = UIColor.blackColor()
     var drawWidth: CGFloat = 10.0
 
-    private var path: UIBezierPath = UIBezierPath()
+    private var lastPoint: CGPoint = CGPointZero
+    private var buffer: UIImage?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,13 +34,34 @@ class DrawView: UIView {
 
     // MARK: Drawing a path
 
-    override func drawRect(rect: CGRect) {
-        // Redraw whole rect, ignoring parameter
-        // (Please note we always invalidate whole view)
+    private func drawLine(a: CGPoint, b: CGPoint, buffer: UIImage?) -> UIImage {
+        let size = self.bounds.size
+
+        // Initialize a full size image. Opaque because we don't need to draw over anything. Will be more performant.
+        UIGraphicsBeginImageContextWithOptions(size, true, 0)
+        let context = UIGraphicsGetCurrentContext()
+
+        CGContextSetFillColorWithColor(context, self.backgroundColor?.CGColor ?? UIColor.whiteColor().CGColor)
+        CGContextFillRect(context, self.bounds)
+
+        // Draw previous buffer first
+        if let buffer = buffer {
+            buffer.drawInRect(self.bounds)
+        }
+
+        // Draw the line
         self.drawColor.setStroke()
-        self.path.lineWidth = self.drawWidth
-        self.path.lineCapStyle = CGLineCap.Round
-        self.path.stroke()
+        CGContextSetLineWidth(context, self.drawWidth)
+        CGContextSetLineCap(context, .Round)
+
+        CGContextMoveToPoint(context, a.x, a.y)
+        CGContextAddLineToPoint(context, b.x, b.y)
+        CGContextStrokePath(context)
+
+        // Grab the updated buffer
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
     }
 
 
@@ -68,18 +90,22 @@ class DrawView: UIView {
     // MARK: Tracing a line
 
     private func startAtPoint(point: CGPoint) {
-        self.path.moveToPoint(point)
+        self.lastPoint = point
     }
 
     private func continueAtPoint(point: CGPoint) {
-        // Accumulate points as they are reported by the gesture recognizer, in a bezier path object
-        self.path.addLineToPoint(point)
-        // Trigger a redraw every time a point is added (finger moves)
-        self.setNeedsDisplay()
+        autoreleasepool {
+            // Draw the current stroke in an accumulated bitmap
+            self.buffer = self.drawLine(self.lastPoint, b: point, buffer: self.buffer)
+            // Replace the layer contents with the updated image
+            self.layer.contents = self.buffer?.CGImage
+            // Update last point for next stroke
+            self.lastPoint = point
+        }
     }
 
     private func endAtPoint(point: CGPoint) {
-        // Nothing to do when ending/cancelling for now
+        self.lastPoint = CGPoint.zero
     }
 
 }
