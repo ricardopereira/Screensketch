@@ -7,11 +7,19 @@
 //
 
 import UIKit
+import Photos
 
 class DrawView: UIView {
 
     var drawColor: UIColor = UIColor.blackColor()
     var drawWidth: CGFloat = 10.0
+
+    var backgroundImage: UIImage? {
+        didSet {
+            self.buffer = backgroundImage
+            self.layer.contents = self.buffer?.CGImage
+        }
+    }
 
     private var lastPoint: CGPoint = CGPointZero
     private var buffer: UIImage?
@@ -27,8 +35,22 @@ class DrawView: UIView {
     }
 
     private func internalInit() {
-        backgroundColor = .grayColor()
         setupGestureRecognizers()
+    }
+
+    func saveDrawing() {
+        guard let image = buffer else {
+            return
+        }
+        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+                PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+            },
+            completionHandler: { success, error in
+                if !success {
+                    print(error)
+                }
+            }
+        )
     }
 
 
