@@ -1,0 +1,26 @@
+<define:resize=smooth>
+
+!BaseIcon:
+"background"
+"logo"
+
+iOS/Icon-29@2x:
+"BaseIcon" 58x58
+
+iOS/Icon-29@3x:
+"BaseIcon" 87x87
+
+iOS/Icon-40@2x:
+"BaseIcon"	80x80
+
+iOS/Icon-40@3x:
+"BaseIcon" 120x120
+
+iOS/Icon-60@2x:
+"BaseIcon" 120x120
+
+iOS/Icon-60@3x:
+"BaseIcon" 180x180
+
+iOS/iTunesArtwork:
+"BaseIcon" 512x512
