@@ -121,7 +121,8 @@ class DrawViewController: UIViewController {
     }
 
     func didTouchShare(sender: AnyObject) {
-
+        let activityViewController = UIActivityViewController(activityItems: [drawView.currentDrawing], applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
     }
 
     func didTouchColor(sender: AnyObject) {

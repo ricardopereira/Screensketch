@@ -38,6 +38,10 @@ class DrawView: UIView {
         setupGestureRecognizers()
     }
 
+    var currentDrawing: UIImage {
+        return buffer ?? UIImage()
+    }
+
     func saveDrawing() {
         guard let image = buffer else {
             return
