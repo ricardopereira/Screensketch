@@ -15,12 +15,22 @@ class DrawViewController: UIViewController {
 
     let drawView = DrawView()
 
+    let colorButton = UIButton(type: .System)
+    let shareButton = UIButton(type: .System)
     let saveButton = UIButton(type: .System)
     let cancelButton = UIButton(type: .System)
 
+    var selectedPenColor: UIColor {
+        didSet {
+            updatePen()
+        }
+    }
+
     init(asset: PHAsset) {
         self.asset = asset
+        self.selectedPenColor = StyleKit.colorPenDefault
         super.init(nibName: nil, bundle: nil)
+        updatePen()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,17 +63,32 @@ class DrawViewController: UIViewController {
             drawView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
         ])
 
-        saveButton.setTitle("Save", forState: .Normal)
-        saveButton.backgroundColor = .lightGrayColor()
-        saveButton.layer.cornerRadius = 6.0
-        saveButton.clipsToBounds = true
+        colorButton.addTarget(self, action: #selector(didTouchColor), forControlEvents: .TouchUpInside)
+        colorButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(colorButton)
+        NSLayoutConstraint.activateConstraints([
+            colorButton.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: 10),
+            colorButton.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor, constant: -10),
+            colorButton.heightAnchor.constraintEqualToConstant(44),
+            colorButton.widthAnchor.constraintEqualToConstant(44),
+        ])
+
+        cancelButton.setImage(StyleKit.imageOfCloseCanvas(frame: CGRect(x: 0, y: 0, width: 25, height: 27)), forState: .Normal)
+        cancelButton.addTarget(self, action: #selector(didTouchCancel), forControlEvents: .TouchUpInside)
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(cancelButton)
+        NSLayoutConstraint.activateConstraints([
+            cancelButton.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: 10),
+            cancelButton.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor, constant: 10),
+            cancelButton.heightAnchor.constraintEqualToConstant(44),
+            cancelButton.widthAnchor.constraintEqualToConstant(44),
+        ])
+
+        saveButton.setImage(StyleKit.imageOfDownloadCanvas(frame: CGRect(x: 0, y: 0, width: 38, height: 38)), forState: .Normal)
         saveButton.addTarget(self, action: #selector(didTouchSave), forControlEvents: .TouchUpInside)
 
-        cancelButton.setTitle("Close", forState: .Normal)
-        cancelButton.backgroundColor = .lightGrayColor()
-        cancelButton.layer.cornerRadius = 6.0
-        cancelButton.clipsToBounds = true
-        cancelButton.addTarget(self, action: #selector(didTouchCancel), forControlEvents: .TouchUpInside)
+        shareButton.setImage(StyleKit.imageOfShareCanvas(frame: CGRect(x: 0, y: 0, width: 38, height: 38)), forState: .Normal)
+        shareButton.addTarget(self, action: #selector(didTouchShare), forControlEvents: .TouchUpInside)
 
         let stackView = UIStackView()
         stackView.axis = .Horizontal
@@ -71,7 +96,7 @@ class DrawViewController: UIViewController {
         stackView.alignment = .Fill
         stackView.spacing = 30
         stackView.addArrangedSubview(saveButton)
-        stackView.addArrangedSubview(cancelButton)
+        stackView.addArrangedSubview(shareButton)
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateConstraints([
@@ -82,12 +107,34 @@ class DrawViewController: UIViewController {
         ])
     }
 
+    func updatePen() {
+        drawView.drawColor = selectedPenColor
+        colorButton.setImage(StyleKit.imageOfColorSelectorCanvas(selectedColor: selectedPenColor), forState: .Normal)
+    }
+
     func didTouchSave(sender: AnyObject) {
         drawView.saveDrawing()
     }
 
     func didTouchCancel(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func didTouchShare(sender: AnyObject) {
+
+    }
+
+    func didTouchColor(sender: AnyObject) {
+        switch self.selectedPenColor {
+        case StyleKit.colorPenDefault:
+            selectedPenColor = StyleKit.colorPenBlue
+        case StyleKit.colorPenBlue:
+            selectedPenColor = StyleKit.colorPenGreen
+        case StyleKit.colorPenGreen:
+            selectedPenColor = StyleKit.colorPenYellow
+        default:
+            selectedPenColor = StyleKit.colorPenDefault
+        }
     }
 
 }
