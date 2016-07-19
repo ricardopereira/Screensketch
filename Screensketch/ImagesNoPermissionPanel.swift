@@ -17,6 +17,8 @@ class ImagesNoPermissionPanel: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .whiteColor()
+        layer.borderWidth = 1.0
+        layer.borderColor = StyleKit.colorBase.CGColor
         
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -61,5 +63,5 @@ class ImagesNoPermissionPanel: UIView {
             UIApplication.sharedApplication().openURL(appSettingsURL)
         }
     }
-    
+
 }

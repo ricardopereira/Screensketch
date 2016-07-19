@@ -78,11 +78,12 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
     }
 
     func setupUI() {
-        view.backgroundColor = StyleKit.colorBase
+        view.backgroundColor = StyleKit.colorBaseLight
 
         view.addSubview(emptyPanel)
         emptyPanel.center = view.center
         emptyPanel.hidden = true
+        emptyPanel.descriptionLabel.text = "Perform a screenshot on your iOS device:\n\n 1. Press and hold the Sleep/Wake button on the top or side of your device.\n\n 2. Immediately press and release the Home button.\n\n The screenshot is available in Photos.app > Albums > Screenshots."
 
         view.addSubview(noPermissionPanel)
         noPermissionPanel.center = view.center
@@ -90,7 +91,7 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
         noPermissionPanel.clipsToBounds = true
         noPermissionPanel.layer.cornerRadius = 6.0
         noPermissionPanel.titleLabel.text = "Screenshots Album: No Access"
-        noPermissionPanel.subtitleLabel.text = "The Photos permission was not authorized. Please enable it in Settings to continue."
+        noPermissionPanel.subtitleLabel.text = "The Photos permission was not authorized. Please enable it in Settings > Screensketch > Photos."
 
         collectionView.flowLayout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 20, right: 20)
         collectionView.flowLayout.minimumLineSpacing = collectionView.flowLayout.sectionInset.bottom
@@ -99,6 +100,7 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
         let cellHeight = cellWidth * 1.5
         collectionView.flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight)
 
+        collectionView.hidden = true
         collectionView.backgroundColor = .whiteColor()
         collectionView.scrollEnabled = true
         collectionView.alwaysBounceVertical = true
@@ -222,6 +224,7 @@ extension ImagesViewController: UICollectionViewDelegateFlowLayout {
         let asset = imagesList[indexPath.item]
         let drawViewController = DrawViewController(asset: asset)
         drawViewController.modalTransitionStyle = .CrossDissolve
+        drawViewController.modalPresentationStyle = .OverCurrentContext
         self.presentViewController(drawViewController, animated: true, completion: nil)
     }
 
