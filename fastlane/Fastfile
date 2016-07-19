@@ -12,14 +12,12 @@
 # This is the minimum version number required.
 # Update this, if you use features of a newer version
 fastlane_version "1.98.0"
-
+REQUIRED_XCODE_VERSION = "7.3.1"
 default_platform :ios
 
 platform :ios do
   before_all do
     # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
-    
-    
   end
 
   desc "Runs all the tests"
@@ -27,24 +25,34 @@ platform :ios do
     scan
   end
 
-  desc "Submit a new Beta Build to Apple TestFlight"
-  desc "This will also make sure the profile is up to date"
-  lane :beta do
-    # match(type: "appstore") # more information: https://codesigning.guide
-    gym(scheme: "Screensketch") # Build your app - more options available
-    pilot
+  desc "Submit a new Beta Build to **TestFlight**"
+  lane :beta do |options|
+    # Set build number to current date and time
+    build_number = Time.new.strftime("%Y.%m.%d.%H.%M")
+    ENV["BUILD_NUMBER"] = build_number
+    increment_build_number build_number: build_number
+    # Beta badge app icon
+    badge(dark: false)
 
-    # sh "your_script.sh"
-    # You can also use other beta testing services here (run `fastlane actions`)
-  end
+    # Certs & Provisioning Profiles
+    match(type: "appstore")
+    puts "AppStore UDID: "+ENV["sigh_eu.ricardopereira.Screensketch_appstore"]
 
-  desc "Deploy a new version to the App Store"
-  lane :appstore do
-    # match(type: "appstore")
-    # snapshot
-    gym(scheme: "Screensketch") # Build your app - more options available
-    deliver(force: true)
-    # frameit
+    # Build
+    gym(
+      scheme: "Screensketch",
+      export_method: "app-store",
+      suppress_xcode_output: true,
+      xcargs: "APP_PROFILE='#{ENV["sigh_eu.ricardopereira.Screensketch_appstore"]}'",
+    )
+
+    # Submit to iTunes Connect
+    pilot(
+      skip_submission: true,
+      skip_waiting_for_build_processing: true
+    ) # Skip the distribution of the app to all beta testers
+
+    clean_build_artifacts
   end
 
   # You can define as many lanes as you want
