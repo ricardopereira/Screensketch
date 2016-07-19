@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D7C946651D3D0821008771A3 /* StyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C946641D3D0821008771A3 /* StyleKit.swift */; };
 		D7C946671D3D1C5C008771A3 /* StyleKitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C946661D3D1C5C008771A3 /* StyleKitExtension.swift */; };
+		D7C946691D3D6AA6008771A3 /* ImagesEmptyPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C946681D3D6AA6008771A3 /* ImagesEmptyPanel.swift */; };
+		D7C9466B1D3D6AB2008771A3 /* ImagesNoPermissionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C9466A1D3D6AB2008771A3 /* ImagesNoPermissionPanel.swift */; };
 		D7EDE7E31D3BC41300C74150 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EDE7E21D3BC41300C74150 /* AppDelegate.swift */; };
 		D7EDE7E51D3BC41300C74150 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EDE7E41D3BC41300C74150 /* DrawViewController.swift */; };
 		D7EDE7EA1D3BC41300C74150 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7EDE7E91D3BC41300C74150 /* Assets.xcassets */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		D7C946641D3D0821008771A3 /* StyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleKit.swift; sourceTree = "<group>"; };
 		D7C946661D3D1C5C008771A3 /* StyleKitExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleKitExtension.swift; sourceTree = "<group>"; };
+		D7C946681D3D6AA6008771A3 /* ImagesEmptyPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesEmptyPanel.swift; sourceTree = "<group>"; };
+		D7C9466A1D3D6AB2008771A3 /* ImagesNoPermissionPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesNoPermissionPanel.swift; sourceTree = "<group>"; };
 		D7EDE7DF1D3BC41300C74150 /* Screensketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Screensketch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7EDE7E21D3BC41300C74150 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D7EDE7E41D3BC41300C74150 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +69,8 @@
 				D7EDE7E21D3BC41300C74150 /* AppDelegate.swift */,
 				D7EDE7F61D3C004000C74150 /* ImagesViewController.swift */,
 				D7EDE7F81D3C20E100C74150 /* ImageViewCell.swift */,
+				D7C946681D3D6AA6008771A3 /* ImagesEmptyPanel.swift */,
+				D7C9466A1D3D6AB2008771A3 /* ImagesNoPermissionPanel.swift */,
 				D7EDE7E41D3BC41300C74150 /* DrawViewController.swift */,
 				D7EDE7F41D3BC64000C74150 /* DrawView.swift */,
 				D7C946641D3D0821008771A3 /* StyleKit.swift */,
@@ -148,11 +154,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7C946651D3D0821008771A3 /* StyleKit.swift in Sources */,
+				D7C9466B1D3D6AB2008771A3 /* ImagesNoPermissionPanel.swift in Sources */,
 				D7EDE7E51D3BC41300C74150 /* DrawViewController.swift in Sources */,
 				D7EDE7E31D3BC41300C74150 /* AppDelegate.swift in Sources */,
 				D7EDE7F71D3C004000C74150 /* ImagesViewController.swift in Sources */,
 				D7EDE7F91D3C20E100C74150 /* ImageViewCell.swift in Sources */,
 				D7C946671D3D1C5C008771A3 /* StyleKitExtension.swift in Sources */,
+				D7C946691D3D6AA6008771A3 /* ImagesEmptyPanel.swift in Sources */,
 				D7EDE7F51D3BC64000C74150 /* DrawView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

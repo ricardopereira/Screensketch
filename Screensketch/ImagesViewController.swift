@@ -9,9 +9,16 @@
 import UIKit
 import Photos
 
-class ImagesViewController: UIViewController {
+protocol ViewControllerAccessPrivacy {
+    func verifyPermissions()
+}
+
+class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
 
     let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+
+    lazy var emptyPanel = ImagesEmptyPanel(frame: CGRect(x: 0, y: 0, width: 280, height: 280))
+    lazy var noPermissionPanel = ImagesNoPermissionPanel(frame: CGRect(x: 0, y: 0, width: 280, height: 200))
 
     typealias PHAssetIdentifier = String
     var imagesCache = [PHAssetIdentifier:UIImage]()
@@ -22,13 +29,43 @@ class ImagesViewController: UIViewController {
         }
     }
 
+    enum ImageListState {
+        case Default
+        case Empty
+        case NoPermission
+    }
+
+    var imageListState: ImageListState = .Empty {
+        didSet {
+            switch imageListState {
+            case .Empty:
+                collectionView.hidden = true
+                emptyPanel.hidden = false
+                noPermissionPanel.hidden = true
+            case .NoPermission:
+                collectionView.hidden = true
+                emptyPanel.hidden = true
+                noPermissionPanel.hidden = false
+            default:
+                collectionView.hidden = false
+                emptyPanel.hidden = true
+                noPermissionPanel.hidden = true
+            }
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerNotifications()
         collectionView.registerClass(ImageViewCell.self, forCellWithReuseIdentifier: String(ImageViewCell))
         collectionView.dataSource = self
         collectionView.delegate = self
         setupUI()
-        loadContent()
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        verifyPhotosPermission()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -36,7 +73,25 @@ class ImagesViewController: UIViewController {
         collectionView.reloadData()
     }
 
+    deinit {
+        unregisterNotifications()
+    }
+
     func setupUI() {
+        view.backgroundColor = StyleKit.colorBase
+
+        view.addSubview(emptyPanel)
+        emptyPanel.center = view.center
+        emptyPanel.hidden = true
+
+        view.addSubview(noPermissionPanel)
+        noPermissionPanel.center = view.center
+        noPermissionPanel.hidden = true
+        noPermissionPanel.clipsToBounds = true
+        noPermissionPanel.layer.cornerRadius = 6.0
+        noPermissionPanel.titleLabel.text = "Screenshots Album: No Access"
+        noPermissionPanel.subtitleLabel.text = "The Photos permission was not authorized. Please enable it in Settings to continue."
+
         collectionView.flowLayout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 20, right: 20)
         collectionView.flowLayout.minimumLineSpacing = collectionView.flowLayout.sectionInset.bottom
         collectionView.flowLayout.minimumInteritemSpacing = 10
@@ -61,12 +116,18 @@ class ImagesViewController: UIViewController {
         let collections = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: Device.isSimulator ? .SmartAlbumUserLibrary : .SmartAlbumScreenshots, options: nil)
 
         guard let albumScreenshots = collections.lastObject as? PHAssetCollection else {
+            imageListState = .Empty
             return
         }
 
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "mediaType = %i", PHAssetMediaType.Image.rawValue)
         let assets = PHAsset.fetchAssetsInAssetCollection(albumScreenshots, options: fetchOptions)
+
+        if assets.count == 0 {
+            imageListState = .Empty
+            return
+        }
 
         var result = [PHAsset]()
         assets.enumerateObjectsUsingBlock { asset, _, _ in
@@ -82,7 +143,38 @@ class ImagesViewController: UIViewController {
             })
         }
 
+        imageListState = .Default
         self.imagesList = result
+
+        dispatch_async(dispatch_get_main_queue()) {
+            self.collectionView.reloadData()
+        }
+    }
+
+    func registerNotifications() {
+        // Notify when the Photo library has changed
+        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+    }
+
+    func unregisterNotifications() {
+        PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+    }
+
+    func verifyPermissions() {
+
+    }
+
+    func verifyPhotosPermission(status: PHAuthorizationStatus? = nil) {
+        switch status ?? PHPhotoLibrary.authorizationStatus() {
+        case .Authorized:
+            loadContent()
+        case .NotDetermined:
+            PHPhotoLibrary.requestAuthorization { status in
+                self.verifyPhotosPermission(status)
+            }
+        default:
+            imageListState = .NoPermission
+        }
     }
 
 }
@@ -131,6 +223,16 @@ extension ImagesViewController: UICollectionViewDelegateFlowLayout {
         let drawViewController = DrawViewController(asset: asset)
         drawViewController.modalTransitionStyle = .CrossDissolve
         self.presentViewController(drawViewController, animated: true, completion: nil)
+    }
+
+}
+
+extension ImagesViewController: PHPhotoLibraryChangeObserver {
+
+    func photoLibraryDidChange(changeInstance: PHChange) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.verifyPhotosPermission()
+        }
     }
 
 }

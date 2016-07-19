@@ -30,4 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func applicationDidBecomeActive(application: UIApplication) {
+        if let viewController = window?.rootViewController as? ViewControllerAccessPrivacy {
+            viewController.verifyPermissions()
+        }
+    }
+
 }
