@@ -55,6 +55,29 @@ platform :ios do
     clean_build_artifacts
   end
 
+  desc "Submit a new Release Build to **AppStore**"
+  lane :release do |options|
+    # Certs & Provisioning Profiles
+    match(type: "appstore")
+    puts "AppStore UDID: "+ENV["sigh_eu.ricardopereira.Screensketch_appstore"]
+
+    # Build
+    gym(
+      scheme: "Screensketch",
+      export_method: "app-store",
+      suppress_xcode_output: true,
+      xcargs: "APP_PROFILE='#{ENV["sigh_eu.ricardopereira.Screensketch_appstore"]}'",
+    )
+
+    # Submit to iTunes Connect
+    pilot(
+      skip_submission: true,
+      skip_waiting_for_build_processing: true
+    ) # Skip the distribution of the app to all beta testers
+
+    clean_build_artifacts
+  end
+
   # You can define as many lanes as you want
 
   after_all do |lane|
