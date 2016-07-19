@@ -24,3 +24,6 @@ iOS/Icon-60@3x:
 
 iOS/iTunesArtwork:
 "BaseIcon" 512x512
+
+iOS/iTunesAppIcon:
+"BaseIcon" 1024x1024
