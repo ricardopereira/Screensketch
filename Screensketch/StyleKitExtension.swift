@@ -19,10 +19,11 @@ extension StyleKit {
         //// Color Declarations
         let fillColorBlack = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
         let fillColorWhite = selectedColor
+        let shadowColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 0.150)
 
         //// Shadow Declarations
         let shadow = NSShadow()
-        shadow.shadowColor = UIColor.lightGrayColor()
+        shadow.shadowColor = shadowColor
         shadow.shadowOffset = CGSize(width: 0.1, height: 2.1)
         shadow.shadowBlurRadius = 4
 
