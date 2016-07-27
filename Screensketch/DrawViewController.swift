@@ -63,6 +63,7 @@ class DrawViewController: UIViewController {
             drawView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
         ])
 
+        colorButton.accessibilityValue = "Color Button"
         colorButton.addTarget(self, action: #selector(didTouchColor), forControlEvents: .TouchUpInside)
         colorButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(colorButton)
@@ -73,6 +74,7 @@ class DrawViewController: UIViewController {
             colorButton.widthAnchor.constraintEqualToConstant(44),
         ])
 
+        cancelButton.accessibilityValue = "Cancel Button"
         cancelButton.setImage(StyleKit.imageOfCloseCanvas(frame: CGRect(x: 0, y: 0, width: 25, height: 27)), forState: .Normal)
         cancelButton.addTarget(self, action: #selector(didTouchCancel), forControlEvents: .TouchUpInside)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
@@ -84,9 +86,11 @@ class DrawViewController: UIViewController {
             cancelButton.widthAnchor.constraintEqualToConstant(44),
         ])
 
+        shareButton.accessibilityValue = "Save Button"
         saveButton.setImage(StyleKit.imageOfDownloadCanvas(frame: CGRect(x: 0, y: 0, width: 38, height: 38)), forState: .Normal)
         saveButton.addTarget(self, action: #selector(didTouchSave), forControlEvents: .TouchUpInside)
 
+        shareButton.accessibilityValue = "Share Button"
         shareButton.setImage(StyleKit.imageOfShareCanvas(frame: CGRect(x: 0, y: 0, width: 38, height: 38)), forState: .Normal)
         shareButton.addTarget(self, action: #selector(didTouchShare), forControlEvents: .TouchUpInside)
 

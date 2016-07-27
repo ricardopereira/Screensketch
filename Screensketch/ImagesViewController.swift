@@ -83,6 +83,7 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
     func setupUI() {
         view.backgroundColor = .whiteColor()
 
+        loadingLabel.accessibilityValue = "Loading Label"
         loadingLabel.text = "Loading"
         loadingLabel.textAlignment = .Center
         loadingLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
@@ -90,6 +91,7 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
         loadingLabel.center = view.center
         view.addSubview(loadingLabel)
 
+        loadingSpinner.accessibilityValue = "Loading Spinner"
         loadingSpinner.startAnimating()
         loadingSpinner.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loadingSpinner)
@@ -98,11 +100,13 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
             loadingSpinner.centerXAnchor.constraintEqualToAnchor(loadingLabel.centerXAnchor)
         ])
 
+        emptyPanel.accessibilityValue = "Empty Panel"
         view.addSubview(emptyPanel)
         emptyPanel.center = view.center
         emptyPanel.hidden = true
         emptyPanel.descriptionLabel.text = "Perform a screenshot on your iOS device:\n\n 1. Press and hold the Sleep/Wake button on the top or side of your device.\n\n 2. Immediately press and release the Home button.\n\n The screenshot is available in Photos.app > Albums > Screenshots."
 
+        noPermissionPanel.accessibilityValue = "No Permission Panel"
         view.addSubview(noPermissionPanel)
         noPermissionPanel.center = view.center
         noPermissionPanel.hidden = true
@@ -111,6 +115,7 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
         noPermissionPanel.titleLabel.text = "Screenshots Album: No Access"
         noPermissionPanel.subtitleLabel.text = "The Photos permission was not authorized. Please enable it in Settings > Screensketch > Photos."
 
+        collectionView.accessibilityValue = "Screenshots Collection"
         collectionView.flowLayout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 25, right: 20)
         collectionView.flowLayout.minimumLineSpacing = collectionView.flowLayout.sectionInset.bottom
         collectionView.flowLayout.minimumInteritemSpacing = 10
