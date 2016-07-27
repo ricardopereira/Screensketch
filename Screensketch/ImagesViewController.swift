@@ -138,7 +138,9 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
             }
             result.append(assetInstance)
 
-            PHImageManager.defaultManager().requestImageForAsset(assetInstance, targetSize: self.collectionView.flowLayout.itemSize, contentMode: .Default, options: PHImageRequestOptions(), resultHandler: { result, _ in
+            let requestOptions = PHImageRequestOptions()
+            requestOptions.synchronous = true
+            PHImageManager.defaultManager().requestImageForAsset(assetInstance, targetSize: self.collectionView.flowLayout.itemSize, contentMode: .Default, options: requestOptions, resultHandler: { result, _ in
                 if let image = result, localIdentifier = asset.localIdentifier {
                     self.imagesCache[localIdentifier] = image
                 }
