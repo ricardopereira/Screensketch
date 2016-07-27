@@ -17,6 +17,9 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
 
     let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
 
+    let loadingLabel = UILabel()
+    let loadingSpinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+
     lazy var emptyPanel = ImagesEmptyPanel(frame: CGRect(x: 0, y: 0, width: 280, height: 280))
     lazy var noPermissionPanel = ImagesNoPermissionPanel(frame: CGRect(x: 0, y: 0, width: 280, height: 200))
 
@@ -78,7 +81,22 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
     }
 
     func setupUI() {
-        view.backgroundColor = StyleKit.colorBaseLight
+        view.backgroundColor = .whiteColor()
+
+        loadingLabel.text = "Loading"
+        loadingLabel.textAlignment = .Center
+        loadingLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        loadingLabel.sizeToFit()
+        loadingLabel.center = view.center
+        view.addSubview(loadingLabel)
+
+        loadingSpinner.startAnimating()
+        loadingSpinner.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingSpinner)
+        NSLayoutConstraint.activateConstraints([
+            loadingSpinner.bottomAnchor.constraintEqualToAnchor(loadingLabel.topAnchor, constant: -10),
+            loadingSpinner.centerXAnchor.constraintEqualToAnchor(loadingLabel.centerXAnchor)
+        ])
 
         view.addSubview(emptyPanel)
         emptyPanel.center = view.center
@@ -116,6 +134,10 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
 
     func loadContent() {
         let collections = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: Device.isSimulator ? .SmartAlbumUserLibrary : .SmartAlbumScreenshots, options: nil)
+
+        loadingLabel.hidden = true
+        loadingSpinner.hidden = true
+        loadingSpinner.stopAnimating()
 
         guard let albumScreenshots = collections.lastObject as? PHAssetCollection else {
             imageListState = .Empty

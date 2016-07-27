@@ -18,7 +18,7 @@ class ImagesNoPermissionPanel: UIView {
         super.init(frame: frame)
         backgroundColor = .whiteColor()
         layer.borderWidth = 1.0
-        layer.borderColor = StyleKit.colorBase.CGColor
+        layer.borderColor = settingsButton.tintColor.CGColor
         
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
