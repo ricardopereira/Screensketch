@@ -10,7 +10,7 @@ import UIKit
 
 class ImagesEmptyPanel: UIView {
 
-    let emptyImageView = UIImageView()
+    let titleLabel = UILabel()
     let descriptionLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -28,9 +28,10 @@ class ImagesEmptyPanel: UIView {
         stackView.axis = .Vertical
         stackView.distribution = .FillProportionally
 
-        emptyImageView.contentMode = .ScaleAspectFit
-        emptyImageView.image = StyleKit.imageOfNoScreenshotsCanvas(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: frame.size.width, height: 30)))
-        stackView.addArrangedSubview(emptyImageView)
+        titleLabel.text = "No screenshots"
+        titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
+        titleLabel.textAlignment = .Center
+        stackView.addArrangedSubview(titleLabel)
 
         descriptionLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         descriptionLabel.lineBreakMode = .ByWordWrapping
