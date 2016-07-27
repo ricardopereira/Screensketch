@@ -138,11 +138,11 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
     }
 
     func loadContent() {
-        let collections = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: Device.isSimulator ? .SmartAlbumUserLibrary : .SmartAlbumScreenshots, options: nil)
-
-        loadingLabel.hidden = true
-        loadingSpinner.hidden = true
-        loadingSpinner.stopAnimating()
+        let collections = PHAssetCollection.fetchAssetCollectionsWithType(
+            .SmartAlbum,
+            subtype: Device.isSimulator ?
+                (Process.arguments.contains("IS_UI_TESTING") ? .SmartAlbumScreenshots : .SmartAlbumUserLibrary) :
+                .SmartAlbumScreenshots, options: nil)
 
         guard let albumScreenshots = collections.lastObject as? PHAssetCollection else {
             imageListState = .Empty
