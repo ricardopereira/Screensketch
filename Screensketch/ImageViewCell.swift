@@ -32,5 +32,23 @@ class ImageViewCell: UICollectionViewCell {
             }
         }
     }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.contentMode = .ScaleAspectFill
+        contentView.clipsToBounds = true
+
+        layer.shadowColor = UIColor.darkGrayColor().CGColor
+        layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+        layer.shadowOpacity = 0.6
+        layer.shadowRadius = 6.0
+        layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: layer.cornerRadius).CGPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = UIScreen.mainScreen().scale
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
 }

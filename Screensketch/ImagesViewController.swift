@@ -93,7 +93,7 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
         noPermissionPanel.titleLabel.text = "Screenshots Album: No Access"
         noPermissionPanel.subtitleLabel.text = "The Photos permission was not authorized. Please enable it in Settings > Screensketch > Photos."
 
-        collectionView.flowLayout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 20, right: 20)
+        collectionView.flowLayout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 25, right: 20)
         collectionView.flowLayout.minimumLineSpacing = collectionView.flowLayout.sectionInset.bottom
         collectionView.flowLayout.minimumInteritemSpacing = 10
         let cellWidth = (self.view.frame.width / 2) - (collectionView.flowLayout.minimumLineSpacing + collectionView.flowLayout.minimumInteritemSpacing)
@@ -214,11 +214,6 @@ extension ImagesViewController: UICollectionViewDelegateFlowLayout {
             return
         }
         let asset = imagesList[indexPath.item]
-        cell.contentView.contentMode = .ScaleAspectFill
-        cell.contentView.clipsToBounds = true
-        cell.contentView.layer.cornerRadius = 6.0
-        cell.contentView.layer.borderWidth = 1.0
-        cell.contentView.layer.borderColor = StyleKit.colorBase.CGColor
         cell.contentView.layer.contents = self.imagesCache[asset.localIdentifier ?? ""]?.CGImage
     }
 
