@@ -1,0 +1,42 @@
+# Uncomment the lines below you want to change by removing the # in the beginning
+
+# A list of devices you want to take the screenshots from
+devices([
+  "iPhone 6",
+  "iPhone 6s Plus",
+  "iPhone 5s",
+  "iPhone 4s"
+])
+
+languages([
+  "en-US",
+])
+
+# Arguments to pass to the app on launch. See https://github.com/fastlane/snapshot#launch-arguments
+# launch_arguments(["-favColor red"])
+
+# The name of the scheme which contains the UI Tests
+scheme "ScreensketchUITests"
+
+# Where should the resulting screenshots be stored?
+output_directory "./fastlane/screenshots"
+
+# Clear all previously generated screenshots before creating new ones
+clear_previous_screenshots true
+
+# Choose which project/workspace to use
+project "./Screensketch.xcodeproj"
+
+# Custom
+
+number_of_retries 0
+stop_after_first_error true
+erase_simulator true
+add_photos([
+  "./fastlane/demo/IMG_2068.PNG",
+  "./fastlane/demo/IMG_1955.PNG",
+  "./fastlane/demo/IMG_1934.PNG",
+  "./fastlane/demo/IMG_1931.PNG",
+  "./fastlane/demo/IMG_2015.PNG",
+  "./fastlane/demo/IMG_2057.PNG",
+])
