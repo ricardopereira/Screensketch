@@ -114,6 +114,7 @@ class DrawViewController: UIViewController {
 
     func didTouchSave(sender: AnyObject) {
         drawView.saveDrawing()
+        showMessage("Screensketch", message: "Saved successfully")
     }
 
     func didTouchCancel(sender: AnyObject) {
@@ -136,6 +137,17 @@ class DrawViewController: UIViewController {
         default:
             selectedPenColor = StyleKit.colorPenDefault
         }
+    }
+
+}
+
+extension DrawViewController {
+
+    func showMessage(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: handler)
+        alertController.addAction(okAction)
+        presentViewController(alertController, animated: true, completion: nil)
     }
 
 }
