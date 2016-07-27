@@ -40,6 +40,10 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
 
     var imageListState: ImageListState = .Empty {
         didSet {
+            loadingLabel.hidden = true
+            loadingSpinner.hidden = true
+            loadingSpinner.stopAnimating()
+
             switch imageListState {
             case .Empty:
                 collectionView.hidden = true
