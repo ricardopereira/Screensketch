@@ -11,7 +11,7 @@
 
 # This is the minimum version number required.
 # Update this, if you use features of a newer version
-fastlane_version "1.98.0"
+fastlane_version "1.99.0"
 REQUIRED_XCODE_VERSION = "7.3.1"
 default_platform :ios
 
@@ -25,21 +25,22 @@ platform :ios do
     scan
   end
 
-  desc "Increment the verion and build number"
-  lane :increment do
+  desc "Increment the version and build number"
+  lane :version_bump_project do |options|
     # Set build number to current date and time
     build_number = Time.new.strftime("%Y.%m.%d.%H.%M")
-    ENV["BUILD_NUMBER"] = build_number
     increment_build_number build_number: build_number
-    # Automatically increment minor version number
-    increment_version_number(
-      bump_type: "minor"
-    )
+    # Set version number conforming the bump type
+    if options[:bump_type]
+      increment_version_number bump_type: options[:bump_type]
+    end
   end
 
   desc "Submit a new Beta Build to **TestFlight**"
   lane :beta do |options|
-    increment
+    # Bump
+    version_bump_project bump_type: options[:bump]
+
     # Beta badge app icon
     badge(dark: false)
 
@@ -66,7 +67,9 @@ platform :ios do
 
   desc "Submit a new Release Build to **AppStore**"
   lane :release do |options|
-    increment
+    # Bump
+    version_bump_project bump_type: options[:bump]
+
     # Certs & Provisioning Profiles
     match(type: "appstore")
     puts "AppStore UDID: "+ENV["sigh_eu.ricardopereira.Screensketch_appstore"]
