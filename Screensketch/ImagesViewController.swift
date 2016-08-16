@@ -179,7 +179,7 @@ class ImagesViewController: UIViewController, ViewControllerAccessPrivacy {
         }
 
         imageListState = .Default
-        self.imagesList = result
+        self.imagesList = result.reverse()
 
         dispatch_async(dispatch_get_main_queue()) {
             self.collectionView.reloadData()
